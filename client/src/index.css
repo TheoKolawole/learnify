@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-secondary: #f59e0b;
+}
+
+:root {
+  /* Light Theme - Modern Calm Blue */
+  --background: oklch(0.98 0.005 240);
+  --foreground: oklch(0.2 0.025 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.025 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.025 260);
+  --primary: oklch(0.55 0.18 265);
+  --primary-foreground: oklch(0.98 0.005 240);
+  --secondary: oklch(0.85 0.12 80);
+  --secondary-foreground: oklch(0.2 0.025 260);
+  --muted: oklch(0.95 0.01 260);
+  --muted-foreground: oklch(0.6 0.02 260);
+  --accent: oklch(0.9 0.05 230);
+  --accent-foreground: oklch(0.2 0.025 260);
+  --destructive: oklch(0.65 0.18 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.85 0.02 260);
+  --input: oklch(0.85 0.02 260);
+  --ring: oklch(0.55 0.18 265);
+  
+  /* Chart colors - Complementary palette for data visualization */
+  --chart-1: oklch(0.55 0.18 265);  /* Primary blue */
+  --chart-2: oklch(0.65 0.18 120);  /* Green */
+  --chart-3: oklch(0.75 0.18 60);   /* Orange */
+  --chart-4: oklch(0.6 0.18 330);   /* Purple */
+  --chart-5: oklch(0.7 0.18 200);   /* Teal */
+  
+  /* Social media colors */
+  --social-google: oklch(0.65 0.18 25);     /* Google red */
+  --social-facebook: oklch(0.5 0.15 265);   /* Facebook blue */
+  --social-twitter: oklch(0.65 0.15 230);   /* Twitter blue */
+  --social-github: oklch(0.25 0.02 260);    /* GitHub dark */
+  --social-linkedin: oklch(0.55 0.15 265);  /* LinkedIn blue */
+  
+  /* Alert/Notification colors */
+  --info: oklch(0.65 0.15 230);        /* Info blue */
+  --info-foreground: oklch(0.15 0.02 260);
+  --success: oklch(0.65 0.18 150);     /* Success green */
+  --success-foreground: oklch(0.15 0.02 260);
+  --warning: oklch(0.75 0.18 80);      /* Warning yellow */
+  --warning-foreground: oklch(0.15 0.02 260);
+  --error: oklch(0.65 0.18 25);        /* Error red */
+  --error-foreground: oklch(1 0 0);
+  
+  /* Loading/Progress states */
+  --loading: oklch(0.6 0.05 260);      /* Subtle loading state */
+  --progress-bg: oklch(0.9 0.02 260);  /* Progress background */
+  
+  /* Interactive states */
+  --hover: oklch(0.9 0.05 265);        /* Hover state */
+  --active: oklch(0.85 0.08 265);      /* Active state */
+  
+  --radius: 0.625rem;
+  
+  /* Sidebar specific colors */
+  --sidebar: oklch(0.95 0.01 260);
+  --sidebar-foreground: oklch(0.2 0.025 260);
+  --sidebar-primary: oklch(0.55 0.18 265);
+  --sidebar-primary-foreground: oklch(0.98 0.005 240);
+  --sidebar-accent: oklch(0.9 0.05 230);
+  --sidebar-accent-foreground: oklch(0.2 0.025 260);
+  --sidebar-border: oklch(0.85 0.02 260);
+  --sidebar-ring: oklch(0.55 0.18 265);
+}
+
+.dark {
+  /* Dark Theme - Deep Blue Night */
+  --background: oklch(0.15 0.025 260);
+  --foreground: oklch(0.95 0.01 260);
+  --card: oklch(0.18 0.025 260);
+  --card-foreground: oklch(0.95 0.01 260);
+  --popover: oklch(0.18 0.025 260);
+  --popover-foreground: oklch(0.95 0.01 260);
+  --primary: oklch(0.65 0.18 265);
+  --primary-foreground: oklch(0.15 0.025 260);
+  --secondary: oklch(0.75 0.18 80);
+  --secondary-foreground: oklch(0.15 0.025 260);
+  --muted: oklch(0.25 0.02 260);
+  --muted-foreground: oklch(0.75 0.02 260);
+  --accent: oklch(0.25 0.05 240);
+  --accent-foreground: oklch(0.95 0.01 260);
+  --destructive: oklch(0.7 0.18 25);
+  --destructive-foreground: oklch(0.95 0.01 260);
+  --border: oklch(0.3 0.02 260);
+  --input: oklch(0.3 0.02 260);
+  --ring: oklch(0.65 0.18 265);
+  
+  /* Chart colors - Optimized for dark theme visibility */
+  --chart-1: oklch(0.65 0.18 265);  /* Bright blue */
+  --chart-2: oklch(0.75 0.18 120);  /* Bright green */
+  --chart-3: oklch(0.8 0.18 60);    /* Bright orange */
+  --chart-4: oklch(0.7 0.18 330);   /* Bright purple */
+  --chart-5: oklch(0.75 0.18 200);  /* Bright teal */
+  
+  /* Social media colors - Brighter for dark mode */
+  --social-google: oklch(0.7 0.18 25);      /* Google red */
+  --social-facebook: oklch(0.6 0.15 265);   /* Facebook blue */
+  --social-twitter: oklch(0.7 0.15 230);    /* Twitter blue */
+  --social-github: oklch(0.8 0.02 260);     /* GitHub light */
+  --social-linkedin: oklch(0.65 0.15 265);  /* LinkedIn blue */
+  
+  /* Alert/Notification colors - Brighter for dark mode */
+  --info: oklch(0.7 0.15 230);         /* Info blue */
+  --info-foreground: oklch(0.15 0.02 260);
+  --success: oklch(0.7 0.18 150);      /* Success green */
+  --success-foreground: oklch(0.15 0.02 260);
+  --warning: oklch(0.8 0.18 80);       /* Warning yellow */
+  --warning-foreground: oklch(0.15 0.02 260);
+  --error: oklch(0.7 0.18 25);         /* Error red */
+  --error-foreground: oklch(1 0 0);
+  
+  /* Loading/Progress states */
+  --loading: oklch(0.5 0.05 260);      /* Subtle loading state */
+  --progress-bg: oklch(0.25 0.02 260); /* Progress background */
+  
+  /* Interactive states */
+  --hover: oklch(0.25 0.05 265);       /* Hover state */
+  --active: oklch(0.3 0.08 265);       /* Active state */
+  
+  /* Sidebar specific colors - slightly darker than main content */
+  --sidebar: oklch(0.12 0.025 260);
+  --sidebar-foreground: oklch(0.95 0.01 260);
+  --sidebar-primary: oklch(0.65 0.18 265);
+  --sidebar-primary-foreground: oklch(0.15 0.025 260);
+  --sidebar-accent: oklch(0.25 0.05 240);
+  --sidebar-accent-foreground: oklch(0.95 0.01 260);
+  --sidebar-border: oklch(0.3 0.02 260);
+  --sidebar-ring: oklch(0.65 0.18 265);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  /* Social media colors */
+  --color-social-google: var(--social-google);
+  --color-social-facebook: var(--social-facebook);
+  --color-social-twitter: var(--social-twitter);
+  --color-social-github: var(--social-github);
+  --color-social-linkedin: var(--social-linkedin);
+  
+  /* Alert/Notification colors */
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  
+  /* Loading/Progress states */
+  --color-loading: var(--loading);
+  --color-progress-bg: var(--progress-bg);
+  
+  /* Interactive states */
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Alert Component Styles */
+.alert {
+  @apply relative w-full rounded-lg border p-4 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11;
+}
+
+.alert-error {
+  @apply border-error/50 text-error-foreground bg-error/10;
+}
+
+.alert-warning {
+  @apply border-warning/50 text-warning-foreground bg-warning/10;
+}
+
+.alert-info {
+  @apply border-info/50 text-info-foreground bg-info/10;
+}
+
+.alert-success {
+  @apply border-success/50 text-success-foreground bg-success/10;
+}
+
+/* Social Button Styles */
+.btn-social-google {
+  @apply bg-background text-foreground border-input hover:bg-accent;
+}
+
+.btn-social-facebook {
+  @apply bg-social-facebook text-white hover:bg-social-facebook/90;
+}
+
+.btn-social-twitter {
+  @apply bg-social-twitter text-white hover:bg-social-twitter/90;
+}
+
+.btn-social-github {
+  @apply bg-social-github text-white hover:bg-social-github/90;
+}
+
+.btn-social-linkedin {
+  @apply bg-social-linkedin text-white hover:bg-social-linkedin/90;
+}
