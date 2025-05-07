@@ -24,7 +24,7 @@ const sendVerificationCodeEmail = async (userId, email) => {
     
     // Send email with verification code
     await transporter.sendMail({
-      from: `MyApp <${process.env.EMAIL_USER}>`,
+      from: `Learnify <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Email Verification Code',
       text: `Your verification code is: ${verification.code}. This code will expire in 30 minutes.`,
@@ -55,7 +55,7 @@ const sendPasswordResetEmail = async (email, resetToken) => {
     
     // Send email with password reset link
     await transporter.sendMail({
-      from: `MyApp <${process.env.EMAIL_USER}>`,
+      from: `Learnify <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Password Reset Request',
       text: `You are receiving this email because you (or someone else) has requested to reset your password. 

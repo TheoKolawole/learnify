@@ -15,7 +15,7 @@ export default function AccountSidebar({ collapsed, toggleCollapse, closeMobileS
             <LucideIcons.LayoutDashboard size={20} />
           </div>
         ) : (
-          <div className="text-xl font-bold text-primary">MyApp</div>
+          <div className="text-xl font-bold text-primary">Learnify</div>
         )}
         
         {/* Close button on mobile / Collapse toggle button on desktop */}

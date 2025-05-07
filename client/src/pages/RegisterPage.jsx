@@ -35,7 +35,7 @@ export default function RegisterPage() {
       <div className="m-auto w-full max-w-lg px-4 pt-12 md:pt-0">
         {/* App Logo/Name */}
         <div className="text-center pt-8">
-          <h1 className="text-4xl font-bold text-primary mb-4 md:mb-8">MyApp</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4 md:mb-8">Learnify</h1>
         </div>
         <div className="overflow-hidden rounded-xl bg-card shadow-lg transition-colors duration-300">
           {/* Theme Toggle Button */}
@@ -46,7 +46,7 @@ export default function RegisterPage() {
           {/* Header */}
           <div className="bg-primary px-6 py-8 text-center text-primary-foreground mt-6 md:mt-0">
             <h1 className="text-3xl font-bold">Create Account</h1>
-            <p className="mt-2 opacity-80">Sign up to get started with MyApp</p>
+            <p className="mt-2 opacity-80">Sign up to get started with Learnify</p>
           </div>
 
           {/* Form */}

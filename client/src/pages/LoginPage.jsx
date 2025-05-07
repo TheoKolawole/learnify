@@ -22,7 +22,7 @@ export default function LoginPage() {
         <div className="m-auto w-full max-w-md px-4">
           {/* App Logo/Name */}
           <div className="text-center pt-8">
-            <h1 className="text-4xl font-bold text-primary mb-4 md:mb-8">MyApp</h1>
+            <h1 className="text-4xl font-bold text-primary mb-4 md:mb-8">Learnify</h1>
           </div>
           
           <div className="overflow-hidden rounded-xl bg-card shadow-lg transition-colors duration-300">
@@ -34,7 +34,7 @@ export default function LoginPage() {
             {/* Header */}
             <div className="bg-primary px-6 py-8 text-center text-primary-foreground">
               <h1 className="text-3xl font-bold">Welcome Back</h1>
-              <p className="mt-2 opacity-80">Sign in to continue to MyApp</p>
+              <p className="mt-2 opacity-80">Sign in to continue to Learnify</p>
             </div>
 
           {/* Form */}
