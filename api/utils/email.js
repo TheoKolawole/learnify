@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Send email verification code
-const sendVerificationCodeEmail = async (userId, email) => {
+const sendEmailVerificationCode = async (userId, email) => {
   try {
     // Create a new verification code
     const verification = await VerificationCode.createVerificationCode(userId, 'email', 30);
@@ -86,6 +86,6 @@ const sendPasswordResetEmail = async (email, resetToken) => {
 };
 
 module.exports = {
-  sendVerificationCodeEmail,
+  sendEmailVerificationCode,
   sendPasswordResetEmail,
 };

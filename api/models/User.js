@@ -46,6 +46,11 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
+  role: {
+    type: String,
+    enum: ['student', 'tutor', 'admin', 'instructor'],
+    default: 'student'
+  },
   resetPasswordToken: {
     type: String,
     default: null

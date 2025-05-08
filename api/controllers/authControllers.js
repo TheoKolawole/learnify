@@ -25,8 +25,9 @@ const login = async (req, res) => {
       return res.status(401).json({ msg: 'Invalid password' });
     }
     
-    const accessToken = generateToken({ id: user._id }, '15m')
-    const refreshToken = generateToken({ id: user._id }, '1d')
+    // Include role in token payload
+    const accessToken = generateToken({ id: user._id, role: user.role }, '15m');
+    const refreshToken = generateToken({ id: user._id, role: user.role }, '1d');
     
     res.cookie('refreshToken', refreshToken, { 
       httpOnly: true, 
@@ -39,7 +40,8 @@ const login = async (req, res) => {
       accessToken,
       emailVerified: user.emailVerified,
       phoneVerified: user.phoneVerified,
-      isVerified: user.isVerified
+      isVerified: user.isVerified,
+      role: user.role
     });
   } catch (error) {
     logger.error(error); // Log error for debugging
@@ -48,7 +50,7 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { firstname, lastname, email, password, role } = req.body;
   
   try {
     if (!firstname || !lastname || !email || !password) {
@@ -63,6 +65,9 @@ const register = async (req, res) => {
     
     const hashedPassword = await bcryptjs.hash(password, 10);
     
+    // Use provided role or default to 'student'
+    const userRole = role || 'student';
+    
     // Create new user with MongoDB/Mongoose
     const user = await User.create({ 
       firstname, 
@@ -72,11 +77,13 @@ const register = async (req, res) => {
       password: hashedPassword,
       emailVerified: false,
       phoneVerified: false,
-      isVerified: false
+      isVerified: false,
+      role: userRole
     });
 
-    const accessToken = generateToken({ id: user._id }, '15m')
-    const refreshToken = generateToken({ id: user._id }, '1d')
+    // Include role in token payload
+    const accessToken = generateToken({ id: user._id, role: userRole }, '15m');
+    const refreshToken = generateToken({ id: user._id, role: userRole }, '1d');
     
     res.cookie('refreshToken', refreshToken, { 
       httpOnly: true, 
@@ -84,16 +91,17 @@ const register = async (req, res) => {
       sameSite: 'strict' 
     });
     
-    // Automatically send email verification code
-    await sendEmailVerificationCode(user._id, email);
+    // // Automatically send email verification code
+    // await sendEmailVerificationCode(user._id, email);
     
     res.json({ 
       status: 'success', 
       accessToken,
-      msg: 'Registration successful. A verification code has been sent to your email.' 
+      msg: 'Registration successful. A verification code has been sent to your email.',
+      role: userRole
     });
   } catch (error) {
-    logger.error(error); // Log error for debugging
+    logger.error("Error registering user: ", error); // Log error for debugging
     res.status(500).json({ msg: "Internal Server Error" });
   }
 }
@@ -109,24 +117,28 @@ const refreshToken = async (req, res) => {
 
   try {
     const decoded = await verifyToken(refreshToken);
-    const accessToken = generateToken({ id: decoded.id }, '15m');
+    
+    // Fetch user to get current role (in case it changed since last token)
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(200).json({ authenticated: false });
+    }
+    
+    // Generate new access token with current role
+    const accessToken = generateToken({ id: decoded.id, role: user.role }, '15m');
     
     let userInfo = {};
     if (withProfile) {
-      // MongoDB query using Mongoose
-      const user = await User.findById(decoded.id);
-      
-      if (user) {
-        userInfo = { 
-          firstname: user.firstname, 
-          lastname: user.lastname, 
-          email: user.email, 
-          passport: user.passport,
-          emailVerified: user.emailVerified,
-          phoneVerified: user.phoneVerified,
-          isVerified: user.isVerified
-        };
-      }
+      userInfo = { 
+        firstname: user.firstname, 
+        lastname: user.lastname, 
+        email: user.email, 
+        passport: user.passport,
+        emailVerified: user.emailVerified,
+        phoneVerified: user.phoneVerified,
+        isVerified: user.isVerified,
+        role: user.role
+      };
     }
     
     res.json({ authenticated: true, accessToken, userInfo });

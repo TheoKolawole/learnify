@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async ({ firstname, lastname, email, dob, gender, address, state, lga, password }) => {
+  const register = async ({ firstname, lastname, email, role, password }) => {
     setLoading(true);
     setError(null);
     try {
@@ -91,11 +91,7 @@ export const AuthProvider = ({ children }) => {
         firstname, 
         lastname, 
         email, 
-        dob, 
-        gender, 
-        address, 
-        state, 
-        lga, 
+        role,
         password 
       }, { withCredentials: true });
       
