@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as LucideIcons from "lucide-react";
 import ThemeToggle from '../ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export default function AccountHeader({ toggleSidebar, toggleCollapse, isSidebarOpen }) {
+  const { userInfo } = useAuth();
   const {logout} = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -45,7 +47,7 @@ export default function AccountHeader({ toggleSidebar, toggleCollapse, isSidebar
         <h1 className='text-xl font-semibold text-foreground'>Dashboard</h1>
       </div>
       
-      <div className='flex items-center space-x-3'>
+      <div className='flex items-center space-x-1'>
         {/* Theme toggle button */}
         <div className='p-2 text-muted-foreground hover:text-primary transition-colors'>
           <ThemeToggle />
@@ -56,16 +58,17 @@ export default function AccountHeader({ toggleSidebar, toggleCollapse, isSidebar
           <LucideIcons.Bell size={20} />
           <span className='absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full'></span>
         </button>
-        
-        {/* Search button */}
-        <button className='p-2 text-muted-foreground hover:text-primary transition-colors'>
-          <LucideIcons.Search size={20} />
+
+        {/* Messages Button */}
+        <button className='relative p-2 text-muted-foreground hover:text-primary transition-colors'>
+          <LucideIcons.MessageSquareText size={20} />
+          <span className='absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full'></span>
         </button>
         
         {/* User profile menu */}
         <div className='relative' ref={userMenuRef}>
           <button 
-            className='flex items-center ml-4 cursor-pointer'
+            className='flex items-center ml-2 cursor-pointer'
             onClick={() => setUserMenuOpen(!userMenuOpen)}
             aria-label="Open user menu"
           >
@@ -78,18 +81,18 @@ export default function AccountHeader({ toggleSidebar, toggleCollapse, isSidebar
           {userMenuOpen && (
             <div className='absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-popover border border-border z-50'>
               <div className='py-2 px-4 border-b border-border'>
-                <p className='text-sm font-medium text-foreground'>User Name</p>
-                <p className='text-xs text-muted-foreground'>user@example.com</p>
+                <p className='text-sm font-medium text-foreground'>{`${userInfo.fullname}`}</p>
+                <p className='text-xs text-muted-foreground'>{`${userInfo.email}`}</p>
               </div>
               <div className='py-1'>
-                <button className='flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted'>
+                <Link to="/user/profile" className='flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted'>
                   <LucideIcons.User className='w-4 h-4 mr-2 text-muted-foreground' />
                   Profile
-                </button>
-                <button className='flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted'>
+                </Link>
+                <Link to="/user/settings" className='flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted'>
                   <LucideIcons.Settings className='w-4 h-4 mr-2 text-muted-foreground' />
                   Settings
-                </button>
+                </Link>
                 <button className='flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted'>
                   <LucideIcons.HelpCircle className='w-4 h-4 mr-2 text-muted-foreground' />
                   Help

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const bcryptjs = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+  // Personal information
   firstname: {
     type: String,
     required: true,
@@ -20,24 +22,45 @@ const UserSchema = new Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
   },
+  password: {
+    type: String,
+    required: true
+  },
+  
+  // Contact information
+  phonenumber: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true
+  },
+  
+  // Profile information
+  profileImage: {
+    type: String,
+    default: ''
+  },
+  bio: {
+    type: String,
+    default: ''
+  },
+  
+  // Role and verification
+  role: {
+    type: String,
+    enum: ['student', 'instructor', 'admin'],
+    default: 'student'
+  },
   emailVerified: {
     type: Boolean,
     default: false
-  },
-  phonenumber: {
-    type: String,
-    required: false,
-    unique: true,
-    trim: true
   },
   phoneVerified: {
     type: Boolean,
     default: false
   },
-  password: {
-    type: String,
-    required: true
-  },
+  
+  // Identity verification
   passport: {
     type: String,
     default: null
@@ -46,11 +69,8 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
-  role: {
-    type: String,
-    enum: ['student', 'tutor', 'admin', 'instructor'],
-    default: 'student'
-  },
+  
+  // Password reset
   resetPasswordToken: {
     type: String,
     default: null
@@ -58,23 +78,58 @@ const UserSchema = new Schema({
   resetPasswordExpires: {
     type: Date,
     default: null
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
 }, {
-  timestamps: true // This will automatically handle createdAt and updatedAt
+  timestamps: true,
+  toJSON: {
+    virtuals: true,
+    transform: function(doc, ret) {
+      delete ret.password;
+      return ret;
+    }
+  },
+  toObject: { virtuals: true }
 });
 
-// Pre-save middleware to update the updatedAt field
-UserSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
+// Virtual for user's full name
+UserSchema.virtual('fullname').get(function() {
+  return `${this.firstname} ${this.lastname}`;
+});
+
+// Pre-save hook to hash password
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  
+  try {
+    const salt = await bcryptjs.genSalt(10);
+    this.password = await bcryptjs.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Method to compare passwords
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  try {
+    return await bcryptjs.compare(candidatePassword, this.password);
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Virtual for courses (if instructor)
+UserSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'instructorId'
+});
+
+// Virtual for enrollments (if student)
+UserSchema.virtual('enrollments', {
+  ref: 'Enrollment',
+  localField: '_id',
+  foreignField: 'studentId'
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -17,12 +17,12 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
     
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
     
     const validPassword = await bcryptjs.compare(password, user.password);
     if (!validPassword) {
-      return res.status(401).json({ msg: 'Invalid password' });
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
     
     // Include role in token payload
@@ -38,10 +38,17 @@ const login = async (req, res) => {
     res.json({ 
       status: 'success', 
       accessToken,
+      userInfo: {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        fullname: user.fullname,
+        email: user.email,
+        profileImage: user.profileImage,
+        role: user.role
+      },
       emailVerified: user.emailVerified,
       phoneVerified: user.phoneVerified,
       isVerified: user.isVerified,
-      role: user.role
     });
   } catch (error) {
     logger.error(error); // Log error for debugging
@@ -73,7 +80,7 @@ const register = async (req, res) => {
       firstname, 
       lastname, 
       email, 
-      passport: null, 
+      profileImage: null, 
       password: hashedPassword,
       emailVerified: false,
       phoneVerified: false,
@@ -97,6 +104,14 @@ const register = async (req, res) => {
     res.json({ 
       status: 'success', 
       accessToken,
+      userInfo: {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        fullname: user.fullname,
+        email: user.email,
+        profileImage: user.profileImage,
+        role: user.role
+      },
       msg: 'Registration successful. A verification code has been sent to your email.',
       role: userRole
     });
@@ -132,16 +147,17 @@ const refreshToken = async (req, res) => {
       userInfo = { 
         firstname: user.firstname, 
         lastname: user.lastname, 
+        fullname: user.fullname,
         email: user.email, 
-        passport: user.passport,
-        emailVerified: user.emailVerified,
-        phoneVerified: user.phoneVerified,
-        isVerified: user.isVerified,
+        profileImage: user.profileImage,
         role: user.role
       };
     }
+    const emailVerified = user.emailVerified;
+    const phoneVerified = user.phoneVerified;
+    const isVerified = user.isVerified;
     
-    res.json({ authenticated: true, accessToken, userInfo });
+    res.json({ authenticated: true, accessToken, userInfo, emailVerified, phoneVerified, isVerified });
   } catch (err) {
     logger.error(err); // Log error for debugging
     return res.status(500).json({ authenticated: false });

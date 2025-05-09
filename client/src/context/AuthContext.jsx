@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     phoneVerified: false,
     isVerified: false
   });
+  const [userInfo, setUserInfo] = useState(null);
 
   // Check if the user is authenticated on page load
   useEffect(() => {
@@ -30,13 +31,14 @@ export const AuthProvider = ({ children }) => {
       if (response.data.authenticated) {
         setAccessToken(response.data.accessToken);
         setIsAuthenticated(true);
+        setUserInfo(response.data.userInfo || null);
         
         // Set verification status if profile was returned
-        if (withProfile && response.data.userInfo) {
+        if (withProfile && response.data) {
           setUserVerification({
-            emailVerified: response.data.userInfo.emailVerified,
-            phoneVerified: response.data.userInfo.phoneVerified,
-            isVerified: response.data.userInfo.isVerified
+            emailVerified: response.data.emailVerified,
+            phoneVerified: response.data.phoneVerified,
+            isVerified: response.data.isVerified
           });
         }
       } else {
@@ -59,6 +61,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data.status === 'success') {
         setAccessToken(response.data.accessToken);
         setIsAuthenticated(true);
+        setUserInfo(response.data.userInfo || null);
         
         // Set verification status returned from login response
         setUserVerification({
@@ -83,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async ({ firstname, lastname, email, role, password }) => {
+  const register = async ({ firstname, lastname, email, dob, gender, address, state, lga, password }) => {
     setLoading(true);
     setError(null);
     try {
@@ -91,13 +94,18 @@ export const AuthProvider = ({ children }) => {
         firstname, 
         lastname, 
         email, 
-        role,
+        dob, 
+        gender, 
+        address, 
+        state, 
+        lga, 
         password 
       }, { withCredentials: true });
       
       if (response.data.status === 'success') {
         setAccessToken(response.data.accessToken);
         setIsAuthenticated(true);
+        setUserInfo(response.data.userInfo || null);
         
         // For new registrations, email is always unverified
         setUserVerification({
@@ -235,6 +243,7 @@ export const AuthProvider = ({ children }) => {
       // Clear state in React context
       setAccessToken(null);
       setIsAuthenticated(false);
+      setUserInfo(null);
       setUserVerification({
         emailVerified: false,
         phoneVerified: false,
@@ -261,6 +270,7 @@ export const AuthProvider = ({ children }) => {
       loading, 
       error, 
       isAuthenticated,
+      userInfo,
       userVerification,
       requestEmailVerification,
       verifyEmail,

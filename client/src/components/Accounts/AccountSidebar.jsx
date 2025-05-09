@@ -2,8 +2,10 @@ import React from "react";
 import * as LucideIcons from "lucide-react";
 import { NavMenu } from "../../../configs/NavMenu";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AccountSidebar({ collapsed, toggleCollapse, closeMobileSidebar }) {
+  const { userInfo } = useAuth();
   const location = useLocation();
   
   return (
@@ -73,8 +75,8 @@ export default function AccountSidebar({ collapsed, toggleCollapse, closeMobileS
         </div>
         {!collapsed && (
           <div className="ml-3">
-            <p className="text-sm font-medium text-foreground">User Name</p>
-            <p className="text-xs text-muted-foreground">user@example.com</p>
+            <p className="text-sm font-medium text-foreground">{`${userInfo.fullname}`}</p>
+            <p className="text-xs text-muted-foreground">{`${userInfo.email}`}</p>
           </div>
         )}
       </div>

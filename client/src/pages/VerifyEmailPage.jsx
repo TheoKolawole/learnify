@@ -6,7 +6,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { Mail, Check, Loader2, RefreshCw } from 'lucide-react';
 
 const VerifyEmailPage = () => {
-  const { userVerification, requestEmailVerification, verifyEmail, loading, logout } = useAuth();
+  const { userAuthentication, requestEmailVerification, verifyEmail, loading, logout } = useAuth();
   const [verificationCode, setVerificationCode] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
@@ -19,13 +19,13 @@ const VerifyEmailPage = () => {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    if (userVerification?.emailVerified) {
+    if (userAuthentication?.emailVerified) {
       navigate('/user/dashboard');
     } else if (!hasSentOtp.current) {
       handleInitialRequest();
       hasSentOtp.current = true;
     }
-  }, [userVerification?.emailVerified]);
+  }, [userAuthentication?.emailVerified]);
 
   useEffect(() => {
     if (countdown > 0) {
