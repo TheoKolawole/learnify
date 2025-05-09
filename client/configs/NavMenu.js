@@ -2,12 +2,13 @@ import { useAuth } from "@/context/AuthContext";
 
 export const NavMenu = () => {
   const {userInfo} = useAuth();
+  const role = userInfo?.role || "student";
 
   const common = [
     {
       name: "Dashboard",
       icon: "Home",
-      slug: "dashboard",
+      slug: `${role}/dashboard`,
     }
   ];
 
@@ -15,32 +16,32 @@ export const NavMenu = () => {
     {
       name: "My Courses",
       icon: "BookOpen",
-      slug: "my-courses",
+      slug: `${role}/courses`,
     },
     // {
     //   name: "Assignments",
     //   icon: "ClipboardList",
-    //   slug: "assignments",
+    //   slug: `${role}/assignments`,
     // },
     {
       name: "Quizzes",
       icon: "ListChecks",
-      slug: "quizzes",
+      slug: `${role}/quizzes`,
     },
     {
       name: "Grades",
       icon: "GraduationCap",
-      slug: "grades",
+      slug: `${role}/grades`,
     },
     // {
     //   name: "Certificates",
     //   icon: "Award",
-    //   slug: "certificates",
+    //   slug: `${role}/certificates`,
     // },
     // {
     //   name: "Browse Courses",
     //   icon: "Search",
-    //   slug: "courses",
+    //   slug: `${role}/courses`,
     // },
   ];
 
@@ -48,60 +49,26 @@ export const NavMenu = () => {
     {
       name: "Courses",
       icon: "BookMarked",
-      slug: "manage-courses",
+      slug: `${role}/courses`,
     },
     // {
     //   name: "Create Course",
     //   icon: "PlusCircle",
-    //   slug: "create-course",
+    //   slug: `${role}/create`course",
     // },
     {
       name: "Submissions",
       icon: "FileText",
-      slug: "submissions",
+      slug: `${role}/submissions`,
     },
     {
       name: "Course Analytics",
       icon: "BarChart3",
-      slug: "course-analytics",
-    },
-  ];
-
-  const admin = [
-    {
-      name: "User Management",
-      icon: "Users",
-      slug: "users",
-    },
-    {
-      name: "Course Management",
-      icon: "Library",
-      slug: "course-management",
-    },
-    {
-      name: "Reports",
-      icon: "FileBarChart",
-      slug: "reports",
-    },
-    {
-      name: "Payments",
-      icon: "CreditCard",
-      slug: "payments",
-    },
-    {
-      name: "System Settings",
-      icon: "Sliders",
-      slug: "system-settings",
-    },
-    {
-      name: "Announcements",
-      icon: "Megaphone",
-      slug: "announcements",
+      slug: `${role}/course-analytics`,
     },
   ];
 
   if (userInfo.role === "student") return [...common, ...student];
   if (userInfo.role === "instructor") return [...common, ...instructor];
-  if (userInfo.role === "admin") return [...common, ...admin];
   return common;
 };

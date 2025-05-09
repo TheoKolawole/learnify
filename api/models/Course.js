@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const slugify = require('slugify');
+
 const courseSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -31,7 +34,8 @@ const courseSchema = new mongoose.Schema({
     required: true
   },
   endDate: {
-    type: Date
+    type: Date,
+    required: false
   }
 }, {
   timestamps: true,
@@ -66,7 +70,7 @@ courseSchema.virtual('enrollments', {
 
 // Index for efficient lookups
 courseSchema.index({ instructorId: 1 });
-courseSchema.index({ slug: 1 });
+// courseSchema.index({ slug: 1 });
 courseSchema.index({ status: 1 });
 
 const Course = mongoose.model('Course', courseSchema);

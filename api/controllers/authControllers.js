@@ -20,14 +20,14 @@ const login = async (req, res) => {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
     
-    const validPassword = await bcryptjs.compare(password, user.password);
+    const validPassword = bcryptjs.compare(password, user.password);
     if (!validPassword) {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
     
     // Include role in token payload
     const accessToken = generateToken({ id: user._id, role: user.role }, '15m');
-    const refreshToken = generateToken({ id: user._id, role: user.role }, '1d');
+    const refreshToken = generateToken({ id: user._id, role: user.role }, '7d');
     
     res.cookie('refreshToken', refreshToken, { 
       httpOnly: true, 
@@ -90,7 +90,7 @@ const register = async (req, res) => {
 
     // Include role in token payload
     const accessToken = generateToken({ id: user._id, role: userRole }, '15m');
-    const refreshToken = generateToken({ id: user._id, role: userRole }, '1d');
+    const refreshToken = generateToken({ id: user._id, role: userRole }, '7d');
     
     res.cookie('refreshToken', refreshToken, { 
       httpOnly: true, 
